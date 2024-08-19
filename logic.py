@@ -57,12 +57,12 @@ class DB_Map():
             coordinates = cursor.fetchone()
             return coordinates
 
-    def create_graph(self, path, city):
+    def create_graph(self, path, city, color):
         ax = plt.axes(projection=ccrs.PlateCarree())
         ax.stock_img()
         cord = self.get_coordinates(city)
         lat, lon = cord
-        plt.plot([lon], [lat], color='blue', marker='.', transform=ccrs.PlateCarree())
+        plt.plot([lon], [lat], color=color, marker='.', transform=ccrs.PlateCarree())
         plt.text(lon - 3, lat - 12, city, horizontalalignment='right', transform=ccrs.Geodetic())
         plt.savefig(f'img/{path}')
         plt.close()
