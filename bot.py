@@ -4,7 +4,7 @@ from logic import *
 
 bot = telebot.TeleBot(TOKEN)
 comands = ['/start', '/help', '/show_city', '/remember_city', '/show_my_cities']
-
+color = 'blue'
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -22,12 +22,22 @@ def handle_help(message):
 @bot.message_handler(commands=['show_city'])
 def handle_show_city(message):
     try :
+        global color 
         city_name = message.text.split()[-1]
-        manager.create_graph(f'{city_name}.png', city_name)
+        manager.create_graph(f'{city_name}.png', city_name, color)
         bot.send_photo(message.chat.id, open (f'img/{city_name}.png', 'rb'))
     except:
         bot.send_message(message.chat.id, 'You need to type name of the city like: /show_city Moscow')
     
+
+@bot.message_handler(commands=['color'])
+def change_color(message):
+    try :
+        global color 
+        color = message.text.split()[-1]
+        bot.send_message(message.chat.id, f'Цвет маркера успешно заменен на {color}')
+    except:
+        bot.send_message(message.chat.id, 'You need to type name of the color like: /color blue')
 
 
 @bot.message_handler(commands=['remember_city'])
